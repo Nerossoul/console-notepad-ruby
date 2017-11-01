@@ -20,4 +20,20 @@ class Memo < Post
 
     return @text.unshift(time_string)
   end
+
+  def to_db_hash
+    return super.merge(
+        {
+            'text' => @text.join('\n\r')
+        }
+    )
+  end
+
+  def load_data(data_hash)
+    super(data_hash)
+    @created_at = Time.parse(data_hash['created_at'])
+
+    @text = data_hash['text'].split('\n\r')
+  end
+
 end
